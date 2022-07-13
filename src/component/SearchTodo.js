@@ -18,6 +18,36 @@ class SearchTodo extends Component {
 
   handleSubmit = (e) => {
     //Begin Here
+    //here are some UI components defined in this file, the main things they will do is submit a 
+    //form which will trigger the call to the searchitem backend service, as part of that submit we 
+    //will take the name of the Todo to search for from the "this.state.content" parameter, 
+    //then a user would type in the UI text box.
+    //Note also we have state associated with this component "tmpdata", this state will be set to the 
+    //data returned from the backend service via the "this.setState({tmpdata: JSON.stringify(res.data),});" 
+    //code we just put in the HandleSubmit method.
+    //We will use this state in the render function, underneath the search UI components you'll see: 
+    //{this.state.tmpdata}
+    //this is empty initially, because we haven't searched for anything, 
+    //but once you supply a search parameter and click the "Search" button, we will set the 
+    //state in the HandleSubmit, which will then update the state in our div to hold the 
+    //return data from the backend service for the search.
+    e.preventDefault();  
+    // HTTP Client to send a GET request
+    Axios({
+    method: "GET",
+    url: "http://localhost:8080/get/searchitem",
+    headers: {
+        "Content-Type": "application/json" 
+    },
+    params: {
+        taskname: this.state.content
+    }
+    }).then(res => {
+    this.setState({
+        tmpdata: JSON.stringify(res.data),
+        });
+
+    });
     
   };
   

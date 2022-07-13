@@ -44,12 +44,25 @@ app.get("/get/items", getItems)
 //** week5, get all items from the json database*/
   function getItems (request, response) {
     //begin here
-    
+    //read in the todo lists stored in the database.json file
+    var data = fs.readFileSync('database.json');
+    //Return a response to whoever called the data we just read in, 
+    //we will return the data from the file but parsed as JSON data
+    response.json(JSON.parse(data));
   } 
 
 app.get("/get/searchitem",searchItems)
 //**week 5, search items service */
   function searchItems (request, response) {
     //begin here
-    
+    //retrieve a parameter passed to this service,
+    //this parameter will be the name of the Todo List we will search for
+    var searchField = request.query.taskname;
+    //read in the database
+    var json = JSON.parse (fs.readFileSync('database.json'));
+    // take the data from the database and apply a filter, this will seperate out only the Todo lists 
+    //that match our search parameter given to the backend service and stored in "searchField"
+    var returnData = json.filter(jsondata => jsondata.Task === searchField);
+    //return a response to whoever called this service with the following
+    response.json(returnData);
   }
